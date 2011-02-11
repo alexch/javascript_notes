@@ -1,0 +1,701 @@
+<h1>Object-Oriented JavaScript</h1>
+
+<p>"I think if one wants to make real progress in JS one needs to drag one's class-based-OO self out back and beat him to death." - Steve Conover</p>
+
+<h1>Object vs. Object</h1>
+
+<ul>
+<li>In JS, an "object" is just a hash
+
+<ul>
+<li>not very object-oriented</li>
+</ul>
+</li>
+<li>To be object-oriented you need to add a few things
+
+<ul>
+<li>the "this" variable</li>
+<li>constructors</li>
+<li>prototypes</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Definition of Object</h1>
+
+<ul>
+<li>An object encapsulates state and behavior
+
+<ul>
+<li><em>state</em> aka data, properties, variables</li>
+<li><em>behavior</em> aka functions, methods, messages</li>
+<li><em>encapsulation</em> = put similar things together; keep dissimilar things apart</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>True Object-Oriented Programming</h1>
+
+<ul>
+<li>In pure OO, a method only directly uses two sources of data
+
+<ul>
+<li>parameters of the method</li>
+<li>properties of the method's own object</li>
+<li>cf. the Law Of Demeter</li>
+</ul>
+</li>
+<li>All other data are manipulated via <em>messages</em> to other objects
+
+<ul>
+<li>i.e. methods</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>"this" is it</h1>
+
+<ul>
+<li><p>"this" is a magic variable that always points to the current object</p>
+
+<pre><code>  var circle = {radius: 2};
+  circle.circumference = function() {
+      return Math.PI * 2 * this.radius;
+  }
+  console.log(circle.circumference()); // 12.566370614359172
+</code></pre></li>
+<li><p>"this" allows one function (method) to operate on many states (instances)</p>
+
+<pre><code>  var biggerCircle = {radius: 4};
+  biggerCircle.circumference = circle.circumference;
+  console.log(biggerCircle.circumference()); // 25.132741228718345
+</code></pre></li>
+</ul>
+
+
+<h1>...but "this" isn't always it</h1>
+
+<ul>
+<li><p>"this" is only set when you call a function <em>via</em> an object</p>
+
+<pre><code>  circle1.circumference()      // OK -- this = circle1
+  circle2['circumference']()   // OK -- this = circle2
+</code></pre></li>
+<li><p>when called <em>sans</em> object, <code>this</code> points to the <strong>global object</strong> (usually <code>window</code>)</p>
+
+<pre><code>  var g = circle.circumference;
+  g();                        // BAD -- this = window, so this.radius = undefined, so result is NaN
+</code></pre>
+
+<ul>
+<li>this is a <strong>terrible</strong> mistake in the language design, even worse than that variables without "var" are global</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>"this" and callbacks</h1>
+
+<p>TODO</p>
+
+<ul>
+<li>a "callback" is a function that will be called later, by someone else</li>
+<li>usually "this" is different</li>
+</ul>
+
+
+<h1><code>apply</code> Yourself</h1>
+
+<ul>
+<li><code>apply</code> is a function that calls a function</li>
+<li><code>apply</code> allows you to dynamically set <code>this</code> and <code>arguments</code></li>
+<li><p><code>apply</code> is called on the function itself using "."</p>
+
+<pre><code>  var add = function(x,y) { return x+y; }
+  add.apply(null, [2, 3]); // returns 5
+
+  var square = function() { return this.value * this.value; }
+  var x = {value: 10}
+  square.apply(x);  // returns 100
+  var y = {value: 20}
+  square.apply(y);  // returns 400
+
+  var increaseBy = function(amount) { return this.value + amount; }
+  increaseBy.apply(x, [4]); // returns 14
+  increaseBy.apply(y, [5]); // returns 25
+</code></pre></li>
+</ul>
+
+
+<h1>A Million Ways To Make An Object</h1>
+
+<ul>
+<li>from scratch</li>
+<li>constructors</li>
+<li>prototypes</li>
+</ul>
+
+
+<h1>Making an object from scratch</h1>
+
+<pre><code>var circle = {};
+circle.radius = 2;
+circle.circumference = function() {
+    return Math.PI * 2 * this.radius;
+}
+circle.area = function() {
+    return Math.PI * this.radius * this.radius;
+}
+circle.radius; // 2
+circle.area;   // function () { ...
+circle.area(); // 12.566370614359172
+</code></pre>
+
+<h1>Making an object from scratch, with literals</h1>
+
+<pre><code>var circle = {
+    radius: 2,
+    circumference: function() {
+        return Math.PI * 2 * this.radius;
+    },
+    area: function() {
+        return Math.PI * this.radius * this.radius;
+    }
+}
+circle.radius; // 2
+circle.area;   // function () { ...
+circle.area(); // 12.566370614359172
+</code></pre>
+
+<ul>
+<li>Note: remember the commas between elements</li>
+<li>Note: remember to <strong>omit</strong> the comma on the last element
+
+<ul>
+<li><p>Protip: make a "done" element, so you don't have to remember, e.g.:</p>
+
+<pre><code>   DONE: null
+</code></pre></li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Constructors and "new"</h1>
+
+<ul>
+<li>A constructor is a <strong>function</strong> that's called with the <strong>new</strong> keyword</li>
+<li><strong>new</strong> says:
+
+<ul>
+<li>make a new empty object</li>
+<li>set the object's <em>prototype</em> to be the function's prototype (more later)</li>
+<li>set <code>this</code> to point to the object</li>
+<li>invoke the function</li>
+<li>return the object (unless the function returns a different object (more later))</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Making an object with a constructor</h1>
+
+<pre><code>var Circle = function(radius) {
+    this.radius = radius;
+    this.circumference = function() {
+        return Math.PI * 2 * this.radius;
+    }
+    this.area = function() {
+        return Math.PI * this.radius * this.radius;
+    }
+};
+var circle = new Circle(2);
+circle.radius; // 2
+circle.area;   // function () { ...
+circle.area(); // 12.566370614359172
+</code></pre>
+
+<ul>
+<li><p>A Note On Spelling:</p>
+
+<ul>
+<li>"Circle" with a capital C is the constructor</li>
+<li>"circle" with a lowercase C is the object (instance)</li>
+</ul>
+</li>
+<li><p>This is the first time we've seen <strong>classes</strong> in JavaScript</p>
+
+<ul>
+<li>class ~= cookie cutter; instance ~= cookie</li>
+<li>for making lots of objects with the same methods and different data</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Making an object with private data using closures</h1>
+
+<ul>
+<li><p>Remember that every function makes a closure</p>
+
+<ul>
+<li>comprising its parameters and local variables</li>
+<li>pointing to its enclosing scope(s)</li>
+</ul>
+</li>
+<li><p>We will use the radius <strong>parameter</strong> as private data</p>
+
+<pre><code>  var Circle = function(radius) {
+      this.circumference = function() {
+          return Math.PI * 2 * radius;
+      }
+      this.area = function() {
+          return Math.PI * radius * radius;
+      }
+  };
+  var circle = new Circle(2);
+  circle.radius; // undefined
+  circle.area(); // 12.566370614359172
+</code></pre></li>
+<li><p>"radius" is private to the scope of the Circle function's closure</p></li>
+<li>"circumference" and "area" are public (exposed) on each circle object
+
+<ul>
+<li>but since they were defined inside the constructor, they can see "radius"</li>
+</ul>
+</li>
+<li>Totally bizarre, huh?</li>
+</ul>
+
+
+<h1>You can also make private methods using closures</h1>
+
+<pre><code>var Circle = function(radius) {
+    var rSquared = function { 
+        return radius * radius; 
+    }
+    this.circumference = function() {
+        return Math.PI * 2 * radius;
+    }
+    this.area = function() {
+        return Math.PI * rSquared();
+    }
+};
+</code></pre>
+
+<h1>A digression: Getters and Setters</h1>
+
+<ul>
+<li><p>If the data is public, you can set the property directly</p>
+
+<pre><code>  circle.radius = 7
+</code></pre></li>
+<li><p>But sometimes you want to validate or modify the data; in that case you use a setter method</p>
+
+<pre><code>  circle.setRadius = function(newRadius) {
+      if (newRadius &lt; 0) {
+          throw {name: "Bad Parameter", message: "A circle's radius may not be negative"}
+      }
+      this.radius = newRadius;
+  };
+</code></pre></li>
+<li><p>You may also want to use a getter method for public data; this allows you to change the internal representation without changing all the calling code</p>
+
+<pre><code>  circle.getRadius = function() {
+      return this.radius;
+  };
+  // then later...
+  circle.getRadius = function() {
+      return this.diameter / 2;
+  };
+</code></pre></li>
+<li><p>private data must be get and set via getters and setters</p>
+
+<pre><code>  var Circle = function(radius) {
+      this.setRadius = function(newRadius) {
+          radius = newRadius;
+      }
+      this.getRadius = function() {
+          return radius;
+      }
+      //...
+  }
+</code></pre></li>
+<li><p>Some people use a single method as a setter and a getter</p>
+
+<pre><code>  var Circle = function(radius) {
+      this.radius = function(r) {
+          if (typeof(r) == 'undefined') {
+              return radius;
+          } else {
+              radius = r;
+          }
+      }
+      // ...
+  }
+  c = new Circle(2);
+  c.radius();     // getter returns 2
+  c.radius(4);    // setter returns nothing
+  c.radius();     // getter returns 4
+</code></pre>
+
+<ul>
+<li><p>but be careful, since it's easy to mistakenly use = instead of ()</p>
+
+<pre><code>    c = new Circle(2);
+    c.radius = 4;    // OOPS! setting a property instead of calling a setter
+    c.radius();      // YIKES! "radius" is not a function any more
+    // =&gt; TypeError: Result of expression 'c.radius' [4] is not a function.
+</code></pre>
+
+<ul>
+<li>this is especially gnarly since the error doesn't occur until long after you make the actual mistake</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Prototypes</h1>
+
+<ul>
+<li>Every JS object has a prototype</li>
+<li>If a property lookup ("." or "[]") fails, then JS looks in the object's prototype also
+
+<ul>
+<li>recursively up the "prototype chain"</li>
+<li>until you find a property with the right name, or you reach Object.prototype</li>
+</ul>
+</li>
+<li>Prototypes work on all properties, not just functions</li>
+<li>An object's prototype can only be set when it is created (mostly)</li>
+<li><p>Example:</p>
+
+<pre><code>  var mammal = {lactates: true, legs: 4};
+
+  var bat = Object.create(mammal);
+  bat.legs = 2;
+  bat.legs;     // 2
+  bat.lactates; // true
+
+  var horse = Object.create(mammal);
+  horse.legs;     // 4
+  horse.lactates; // true
+
+  octohorse = Object.create(horse);
+  octohorse.legs = 8;
+  octohorse.legs  // 8
+</code></pre></li>
+<li><p>Side note: <code>Object.create</code> was recently added to the JS spec and may not be present in all browsers. You can implement it like this:</p>
+
+<pre><code>  if (!Object.create) {
+      (function() {
+          function F() {}
+          Object.create = function(parent) {
+              F.prototype = parent;
+              return new F();
+          };
+      }());
+  }
+</code></pre></li>
+</ul>
+
+
+<h1>Using <code>new</code> to set an object's prototype</h1>
+
+<ul>
+<li>Reminder: <strong>new</strong> says:
+
+<ul>
+<li>make a new empty object</li>
+<li>set the object's <em>prototype</em> to be the constructor function's prototype</li>
+<li>set <code>this</code> to point to the object</li>
+<li>invoke the function</li>
+</ul>
+</li>
+<li><p>OK, so what is the function's prototype?</p>
+
+<ul>
+<li>Answer: it's the value of the property named <code>prototype</code> on that function object</li>
+<li><p>Every function has one</p>
+
+<pre><code>      function add(x,y) { return x+y; }
+      add.prototype;    // some weird object with a "constructor" property pointing to add
+</code></pre></li>
+</ul>
+</li>
+<li><p>So, we can either replace the prototype</p>
+
+<pre><code>      var Bat = function() { 
+          this.legs = 2; 
+      }
+      Bat.prototype = mammal;
+      bat = new Bat();
+      bat.lactates;     // true
+</code></pre></li>
+<li><p>Or we can add properties to the prototype</p>
+
+<pre><code>      var Whale = function() { 
+          this.legs = 0;
+      }
+      Whale.prototype.locomotion = "swimming";
+      Whale.prototype.lactates = true;
+      whale = new Whale();
+      whale.lactates;     // true
+</code></pre></li>
+<li><p>And some of those properties can be functions</p>
+
+<pre><code>  var Circle = function(radius) {
+      this.radius = radius;
+  }
+  Circle.prototype.circumference = function() {
+      return Math.PI * 2 * this.radius;
+  }
+  Circle.prototype.area = function() {
+      return Math.PI * this.radius * this.radius;
+  }
+
+  var circle = new Circle(2);
+  circle.radius;  // this is 2; it's stored on the circle
+  circle.area;    // this is a function; it's stored on Circle.prototype
+  circle.area();  // this is a function call; inside it, "this" points to the circle
+</code></pre></li>
+</ul>
+
+
+<h1>When is a prototype not a prototype?</h1>
+
+<ul>
+<li>The prototype of a function is not really that function's prototype</li>
+<li>Two properties
+
+<ul>
+<li><code>__proto__</code> or <code>[[Proto]]</code> -- the hidden link to the prototype chain</li>
+<li><code>prototype</code> -- specifies the hidden link for objects created using this function and <code>new</code></li>
+</ul>
+</li>
+<li>Yes, this is maddening
+
+<ul>
+<li>but only if you think about it <code>:-)</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Names and Types</h1>
+
+<ul>
+<li>By convention, constructors are capitalized, and represent a type name (or class name)</li>
+<li><p>You can use <code>instanceof</code> to check an object's type</p>
+
+<pre><code>  circle instanceof Circle  // true
+  circle instanceof Object  // also true
+</code></pre>
+
+<ul>
+<li>note: no parens required</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Using prototypes to extend core objects</h1>
+
+<ul>
+<li>Remember, every object has a prototype, which is usually a <em>pointer</em> to a shared prototype defined on the constructor</li>
+<li>So if you add a property to these shared prototypes, it magically appears on all objects of that type</li>
+<li><p>Example: Array.sum -- adds all elements of an array together</p>
+
+<pre><code>  Array.prototype.sum = function() {
+      var total = 0;
+      for (var i=0; i&lt;this.length; ++i) {
+          total += this[i];
+      }
+      return total;
+  };
+  [1,2,3].sum()  // 6
+</code></pre>
+
+<ul>
+<li>Q: what is "this"?</li>
+</ul>
+</li>
+<li><p>Example: Array.each -- apply a function to each element of an array</p>
+
+<pre><code>  Array.prototype.each = function(operation) {
+      for (var i=0; i&lt;this.length; ++i) {
+          operation(this[i]);
+      }
+  };
+  [1,2,3].each(function(x) { console.log(10-x); }) // prints 9, 8, 7 to console
+</code></pre>
+
+<ul>
+<li><p>...so now we can rewrite <code>sum</code> in terms of <code>each</code></p>
+
+<pre><code>    Array.prototype.sum = function() {
+      var total = 0;
+      this.each(function(x) { 
+          total += x;
+      })
+      return total;
+    };
+    [1,2,3].sum()  // 6
+    [4,5,6].sum()  // 15
+</code></pre></li>
+<li><p>Gotcha: this breaks "for x in a" for arrays</p></li>
+</ul>
+</li>
+<li><p>Example: String.reverse</p>
+
+<pre><code>  String.prototype.reverse = function() {
+      return Array.prototype.reverse.apply(this.split('')).join('');
+  }
+  "abc".reverse() // "cba"
+</code></pre>
+
+<ul>
+<li>Q: What's actually doing the reversing?</li>
+<li>Q: Why are we using "apply"?</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Prototypical Inheritance</h1>
+
+<ul>
+<li>Let's say we want to make a simple class hierarchy
+
+<ul>
+<li><p>Mammal > Cat</p>
+
+<pre><code>      function Mammal() {}
+      function Cat() {}
+</code></pre></li>
+</ul>
+</li>
+<li><p>We want every cat to contain all properties of Mammal</p>
+
+<pre><code>        Cat.prototype = Mammal.prototype; // BAD
+</code></pre>
+
+<ul>
+<li>now setting properties on Cat.prototype will <strong>also</strong> set them on Mammal.prototype</li>
+</ul>
+</li>
+<li><p>We want the cat's prototype to be a <strong>new object</strong> whose prototype is Mammal's prototype</p>
+
+<pre><code>        Cat.prototype = new Mammal(); // GOOD
+</code></pre>
+
+<ul>
+<li>Each cat has its own properties</li>
+<li>All cats share a single prototype</li>
+<li>All mammals share a separate, single prototype</li>
+<li>cat.x will look first on cat, then on Cat's prototype, then on Mammal's prototype</li>
+</ul>
+</li>
+<li>Yes, it's weird that the cat's prototype <em>is</em> a mammal, but so it goes</li>
+<li><p>Note: we probably want to clean up the "constructor" property so <code>instanceof</code> works</p>
+
+<pre><code>      Cat.prototype.constructor = Cat; // sigh
+</code></pre></li>
+</ul>
+
+
+<h1>Calling superclass methods</h1>
+
+<ul>
+<li><p>One class can call its parent class' methods using <code>apply</code></p>
+
+<pre><code>  var Rectangle = function(height, width) {
+      this.height = height;
+      this.width = width;
+  }
+  Rectangle.prototype.area = function() { 
+      return this.height * this.width; 
+  }
+
+  var Square = function(side) {
+      Rectangle.apply(this, [side, side]);
+  }
+  Square.prototype = new Rectangle();
+  Square.prototype.constructor = Square;
+
+  s = new Square(10);
+  s.area(); // 100
+
+  var Cube = function(side) {
+      Square.apply(this, [side]);
+  }
+  Cube.prototype = new Square();
+  Cube.prototype.constructor = Cube;        
+  Cube.prototype.area = function() {
+      return Square.prototype.area.apply(this) * 6;
+  }
+  Cube.prototype.volume = function() {
+      return Rectangle.prototype.area.apply(this) * this.height;
+  }
+
+  c = new Cube(10);
+  c.area();     // 600
+  c.volume();   // 1000
+</code></pre></li>
+<li><p>You can set a "superclass" (aka "_super" or "uber") property so you don't have to name the superclass every time</p>
+
+<pre><code>  Cube.prototype._super = Square.prototype;
+  Cube.prototype.area = function() {
+      return this._super.area.apply(this) * 6;
+  }
+</code></pre></li>
+</ul>
+
+
+<h1>Disposable Function</h1>
+
+<ul>
+<li><p>If you don't want to "waste" an instance of the superclass, you can make a new disposable function and steal its prototype</p>
+
+<pre><code>  function Square(){};
+  var F = function(){};
+  F.prototype = Rectangle.prototype;
+  Square.prototype = new F();
+</code></pre></li>
+</ul>
+
+
+<h1>extend</h1>
+
+<ul>
+<li><p>Write a function that does all these bothersome steps in one</p>
+
+<pre><code>  function extend(Child, Parent) {
+      var F = function(){};
+      F.prototype = Parent.prototype;
+      Child.prototype = new F();
+      Child.prototype.constructor = Child;
+      Child.prototype._super = Parent.prototype;
+  }
+</code></pre></li>
+<li><p>Several libraries have done it, in slightly different ways</p>
+
+<ul>
+<li>prototype.js</li>
+<li>Yahoo User Interface (YUI)</li>
+<li>...</li>
+</ul>
+</li>
+<li>jQuery's extend does <em>not</em> do this; instead it merges the contents of two or more objects together into the first object
+
+<ul>
+<li>as it turns out, this is a completely different way to do inheritance in JS</li>
+</ul>
+</li>
+</ul>
+
