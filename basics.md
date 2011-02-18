@@ -2,6 +2,22 @@
 
 "In JavaScript, there is a beautiful, elegant, highly expressive language that is buried under a steaming pile of good intentions and blunders."
  - Douglas Crockford, JavaScript: The Good Parts
+ 
+# Types
+
+# Equality
+
+TODO: Crockford examples
+
+http://stackoverflow.com/questions/1724255/why-does-2-2-in-javascript
+
+    2 == [2] // true
+
+evaluates as 
+
+    2 === Number([2].valueOf().toString())
+
+Moral: always use === (triple equal)
 
 # Objects
 

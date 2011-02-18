@@ -1,0 +1,177 @@
+<h1>The DOM</h1>
+
+<ul>
+<li>stands for Document Object Model
+
+<ul>
+<li>"Document" = HTML page
+
+<ul>
+<li>also works for XML</li>
+</ul>
+</li>
+<li>"Object Model" = way of describing page elements
+
+<ul>
+<li>tags, attributes, styles, text, etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Mostly standard
+
+<ul>
+<li>but there are some browser differences</li>
+</ul>
+</li>
+<li>Core DOM objects
+
+<ul>
+<li>Node, Element, Text, Comment, Attr</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>The BOM</h1>
+
+<ul>
+<li>stands for Browser Object Model</li>
+<li>global <code>window</code> variable has lots of nice properties
+
+<ul>
+<li><code>window.location</code></li>
+<li><code>window.navigator</code></li>
+<li><code>window.history</code></li>
+<li><code>window.screen</code></li>
+<li><code>window.frames</code></li>
+<li><code>window.document</code> -- hey, look! it's the DOM</li>
+</ul>
+</li>
+<li>methods too
+
+<ul>
+<li><code>open()</code>, <code>close()</code></li>
+<li><code>moveTo()</code>, <code>sizeTo()</code></li>
+<li><code>alert()</code>, <code>prompt()</code>, <code>confirm()</code></li>
+<li><code>setTimeout()</code>, <code>setInterval()</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h1><code>window</code> vs. <code>document</code></h1>
+
+<ul>
+<li><code>document</code> is the page</li>
+<li><code>window</code> is the stuff around the page</li>
+<li><p>Kinda the same, but kinda different</p>
+
+<pre><code>  window === document 
+  // =&gt; false
+  window.location === document.location
+  // =&gt; true
+</code></pre></li>
+</ul>
+
+
+<h1><code>window</code> is magic</h1>
+
+<ul>
+<li><code>window.location = "http://google.com"</code>
+
+<ul>
+<li>makes the browser load a new page</li>
+</ul>
+</li>
+<li><p>global JS functions are properties of <code>window</code></p>
+
+<pre><code>  window.x = 7;
+  x === 7; // true
+  y = 9;
+  window.y === 9 // works in reverse too
+</code></pre></li>
+<li><p>core JS functions are methods of <code>window</code></p>
+
+<pre><code>  parseInt('123')         // same
+  window.parseInt('123')  // thing
+</code></pre></li>
+</ul>
+
+
+<h1>Locating HTML Elements</h1>
+
+<ul>
+<li>the hard way
+
+<ul>
+<li>traverse the document tree using DOM Node methods</li>
+</ul>
+</li>
+<li>the somewhat easier way
+
+<ul>
+<li><code>document.getElementsByTagName('p')[0]</code></li>
+</ul>
+</li>
+<li>the easy way
+
+<ul>
+<li><code>document.getElementById('article')</code></li>
+</ul>
+</li>
+<li>the awesome way
+
+<ul>
+<li><code>$('#article')</code></li>
+<li>CSS Selectors FTW!</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>$?</h1>
+
+<ul>
+<li>dollar sign, like underscore, is a valid symbol name</li>
+<li>jQuery (and some other libraries) define <code>$</code> as a function that's like a souped-up <code>getElementById</code>
+
+<ul>
+<li>unfortunately, the object <code>$</code> returns is not an Element, but a wrapper</li>
+<li>somewhat different API</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Adding HTML</h1>
+
+<ul>
+<li><p>brute force (raw HTML strings)</p>
+
+<pre><code>  document.write("&lt;p id='message'&gt;hi&lt;/p&gt;");  // :-( this freaks out Firebug Console
+
+  var message = document.getElementById('message');
+  message.innerHTML = "&lt;b&gt;bye&lt;/b&gt;!";
+</code></pre></li>
+</ul>
+
+
+<h1>Altering HTML Elements</h1>
+
+<h1>Headless DOM</h1>
+
+<ul>
+<li>TODO: headless horseman image</li>
+<li><a href="http://www.envjs.com/">env.js</a> is a simulated browser environment written in JavaScript</li>
+</ul>
+
+
+<h1>setTimeout</h1>
+
+<h1>References</h1>
+
+<ul>
+<li><a href="http://www.onlinetools.org/articles/unobtrusivejavascript">http://www.onlinetools.org/articles/unobtrusivejavascript</a></li>
+</ul>
+
