@@ -159,19 +159,336 @@
 
 <h1>Altering HTML Elements</h1>
 
-<h1>Headless DOM</h1>
+<ul>
+<li>Look at DOM reference</li>
+</ul>
+
+
+<h1>the style property</h1>
 
 <ul>
-<li>TODO: headless horseman image</li>
-<li><a href="http://www.envjs.com/">env.js</a> is a simulated browser environment written in JavaScript</li>
+<li>acts like a hash with properties for most CSS attributes</li>
+<li><p>CSS uses dashes; JavaScript uses camelCase</p>
+
+<pre><code>  div.style.backgroundColor = "#FF0000";
+</code></pre></li>
+</ul>
+
+
+<h1>the "px" problem</h1>
+
+<ul>
+<li>CSS position and layout attributes need a unit</li>
+<li><p>the default is <strong>not</strong> "px"</p>
+
+<ul>
+<li>except sometimes it works</li>
+<li><p>which is worse than never working</p>
+
+<pre><code>div.style.width = "10px";
+</code></pre></li>
+</ul>
+</li>
+<li><p>here's a handy helper method</p>
+
+<pre><code>  Number.prototype.px = function() {
+      return "" + this + "px";
+  }
+
+  (5).px(); // "5px"
+  x = 10;
+  x.px();   // "10px"
+</code></pre></li>
 </ul>
 
 
 <h1>setTimeout</h1>
 
+<ul>
+<li>You pass in a function (let's call it F) and a number (call it N)</li>
+<li>Execution returns <em>immediately</em></li>
+<li>F gets called approximately N milliseconds later
+
+<ul>
+<li>not exact, but close enough for simple animation</li>
+</ul>
+</li>
+<li>F is known as a <strong>callback</strong>
+
+<ul>
+<li>because the system calls it back at some later point</li>
+<li>callbacks are used all over the place in JavaScript
+
+<ul>
+<li>events, Jasmine tests, jQuery, node.js, ...</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Wait a second... did you say ANIMATION???!?!</h1>
+
+<ul>
+<li><p>Animating HTML is very exciting</p>
+
+<pre><code>  function slide(element) {
+      element.style.position = "absolute";
+      var x = 0;
+      function step() {
+          if (x &gt; 1000) {
+              // stop the animation
+              return;
+          } else {
+              element.style.left = x.px();
+              x += 10;
+              // schedule the next animation
+              setTimeout(step, 100);
+          }
+      }
+      step();  // start animation
+  }
+</code></pre></li>
+</ul>
+
+
+<p>Scoping note: <code>step</code> is available inside the function itself because we defined it with a name, not anonymously.</p>
+
+<h1>jQuery Animation</h1>
+
+<ul>
+<li>jQuery has some fun methods to animate CSS attributes</li>
+<li><p><a href="http://api.jquery.com/animate">http://api.jquery.com/animate</a></p>
+
+<pre><code>     $("#effect").animate({
+              backgroundColor: "#aa0000"
+          }, 1000 );
+</code></pre>
+
+<ul>
+<li>You choose the attribute(s) and their final value, plus the duration of the entire effect</li>
+<li>jQuery calculates and interpolates the details</li>
+</ul>
+</li>
+<li>jQuery UI has lots more
+
+<ul>
+<li><a href="http://jqueryui.com/">http://jqueryui.com/</a>, not <a href="http://jquery.com/">http://jquery.com/</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Testing Animation</h1>
+
+<ul>
+<li>Use a "Mock Clock"
+
+<ul>
+<li>replace <code>setTimeout</code> with a different function during tests</li>
+<li>this function keeps track of what would be called when</li>
+<li>then "ticks" forward when asked</li>
+<li>you can simulate speeding up and slowing down time</li>
+</ul>
+</li>
+<li><p>In Jasmine:</p>
+
+<pre><code>  beforeEach(function() { 
+    jasmine.Clock.useMock(); 
+  }); 
+  //...
+  jasmine.Clock.tick(500); // advance 500 msec
+</code></pre>
+
+<ul>
+<li>see thread <a href="http://groups.google.com/group/jasmine-js/browse_thread/thread/f987956c624840d1/73b3ff5391244b19">How to test timers?</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Events</h1>
+
+<ul>
+<li>When a user does something, it generates an <em>event</em>
+
+<ul>
+<li>e.g. click on a button</li>
+<li>the <em>target</em> is the element that was affected</li>
+<li>the <em>event</em> is an object describing the details</li>
+<li>the <em>listener</em> is a function you wrote</li>
+</ul>
+</li>
+<li>"listener" is just another name for "callback" (for events)
+
+<ul>
+<li>also called "handler"</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>How do I hook thee up? Let me count the ways.</h1>
+
+<blockquote><p>How do I love thee? Let me count the ways.</p>
+
+<p>I love thee to the depth and breadth and height</p>
+
+<p>My soul can reach, when feeling out of sight</p>
+
+<p>For the ends of Being and ideal Grace.</p>
+
+<ul>
+<li>Elizabeth Barrett Browning (1806-1861)</li>
+</ul>
+</blockquote>
+
+<h2>Event Name Gotcha</h2>
+
+<ul>
+<li>the name of the property is <strong>not</strong> camelCase</li>
+<li>the property name starts with "on" but the event name does <strong>not</strong> include "on"</li>
+</ul>
+
+
+<h2>Event Binding</h2>
+
+<ol>
+<li><p>assign a <em>string</em> to the onwhatever property in HTML</p>
+
+<pre><code> &lt;div onclick='alert("hi")'&gt;hi&lt;/div&gt;
+</code></pre></li>
+<li><p>assign a function to the onwhatever property in JS</p>
+
+<pre><code> &lt;div id='hi'&gt;hi&lt;/div&gt;
+ &lt;script&gt;
+ div = document.getElementById('hi');
+ div.onclick = function() { 
+     alert("hi");
+     return false;
+ }
+ &lt;/script&gt;
+</code></pre>
+
+<ul>
+<li>gotcha: can only attach a single listener</li>
+</ul>
+</li>
+<li><p>call the <code>addEventListener</code> method in JS</p>
+
+<pre><code> div.addEventListener('click', function() {
+     alert("hi");
+ });
+</code></pre>
+
+<ul>
+<li>gotcha: in IE, you must use <code>attachEvent</code> instead</li>
+</ul>
+</li>
+<li><p>use jQuery's <code>bind</code> method</p>
+
+<pre><code> $('#hi').bind('click', function() {
+     alert("hi");
+ });
+</code></pre></li>
+<li><p>use jQuery's convenience method for standard event types</p>
+
+<pre><code> $('#hi').click(function() {
+     alert("hi");
+ });
+</code></pre>
+
+<ul>
+<li>gotcha: if you call <code>click()</code> with no parameters, it <em>triggers</em> a click</li>
+</ul>
+</li>
+</ol>
+
+
+<h1><code>return false</code></h1>
+
+<ul>
+<li>if the event listener returns false, all further processing stops</li>
+<li>usually used to stop a form from actually submitting after a handled <code>submit</code> event</li>
+</ul>
+
+
+<h1>Many event types</h1>
+
+<ul>
+<li>Mouse
+
+<ul>
+<li>mousedown, mouseup, click</li>
+<li>mouseover</li>
+</ul>
+</li>
+<li>Keyboard
+
+<ul>
+<li>keydown, keypress, keyup</li>
+</ul>
+</li>
+<li>Window
+
+<ul>
+<li>load, unload, beforeunload</li>
+<li>ready (jQuery only)</li>
+<li>abort, error</li>
+<li>resize, scroll, contextmenu</li>
+</ul>
+</li>
+<li>Form
+
+<ul>
+<li>focus, blur
+
+<ul>
+<li>blur is the stupidest name ever in the history of stupid</li>
+<li>should have been "unfocus" or "losefocus"</li>
+</ul>
+</li>
+<li>change, select</li>
+<li>submit, reset</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>Headless DOM</h1>
+
+<ul>
+<li>TODO: headless horseman image</li>
+<li><a href="http://www.envjs.com/">env.js</a> is a simulated browser environment written in JavaScript</li>
+<li>good for automated testing (e.g. continuous integration box)</li>
+</ul>
+
+
 <h1>References</h1>
 
 <ul>
-<li><a href="http://www.onlinetools.org/articles/unobtrusivejavascript">http://www.onlinetools.org/articles/unobtrusivejavascript</a></li>
+<li>DOM
+
+<ul>
+<li><a href="http://msdn.microsoft.com/library">http://msdn.microsoft.com/library</a></li>
+<li><a href="http://www.w3schools.com/jsref">http://www.w3schools.com/jsref</a></li>
+<li><a href="http://www.w3schools.com/HTMLDOM">http://www.w3schools.com/HTMLDOM</a></li>
+</ul>
+</li>
+<li>Animation
+
+<ul>
+<li><a href="http://api.jquery.com/category/effects/">http://api.jquery.com/category/effects/</a></li>
+<li><a href="http://api.jquery.com/animate/">http://api.jquery.com/animate/</a></li>
+</ul>
+</li>
+<li>Events
+
+<ul>
+<li><a href="http://www.quirksmode.org/js/introevents.html">http://www.quirksmode.org/js/introevents.html</a></li>
+<li><a href="http://api.jquery.com/category/events/">http://api.jquery.com/category/events/</a></li>
+</ul>
+</li>
 </ul>
 
