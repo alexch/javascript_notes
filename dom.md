@@ -110,6 +110,11 @@
         x = 10;
         x.px();   // "10px"
 
+* here's a trick for reading "px" values
+        
+        parseInt(h1.style.width)
+
+
 # setTimeout
 
 * You pass in a function (let's call it F) and a number (call it N)
@@ -126,7 +131,7 @@
 * Animating HTML is very exciting
 
         function slide(element) {
-            element.style.position = "absolute";
+            element.style.position = "fixed";
             var x = 0;
             function step() {
                 if (x > 1000) {
@@ -158,6 +163,15 @@ Scoping note: `step` is available inside the function itself because we defined 
 * jQuery UI has lots more
   * <http://jqueryui.com/>, not <http://jquery.com/>
   
+  
+# Loading jQuery
+
+    <script type="text/javascript"
+     src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" />
+    
+<http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/>
+
+    
 # Testing Animation
 
 * Use a "Mock Clock"
@@ -170,7 +184,7 @@ Scoping note: `step` is available inside the function itself because we defined 
         beforeEach(function() { 
           jasmine.Clock.useMock(); 
         }); 
-        //...
+        //... call the code that calls setTimeout
         jasmine.Clock.tick(500); // advance 500 msec
         
   * see thread [How to test timers?](http://groups.google.com/group/jasmine-js/browse_thread/thread/f987956c624840d1/73b3ff5391244b19)
@@ -268,6 +282,29 @@ Scoping note: `step` is available inside the function itself because we defined 
       * should have been "unfocus" or "losefocus"
     * change, select
     * submit, reset
+    
+# more about jQuery binding    
+
+    var f = function(event) {....}
+    
+    $('#hi').click(f);
+    $('#hi').change(f);
+    
+    $('#hi').bind('click', f);
+    $('#ho').bind('change', f);
+
+    $('#hi').bind('click change', f);
+
+    $('#hi').bind('click', f)
+            .bind('change', f);
+    
+    
+    
+# Ready, Fire, Aim
+
+        $(document).ready(function() {
+            //
+        })
 
 # Headless DOM
 
@@ -280,6 +317,8 @@ Scoping note: `step` is available inside the function itself because we defined 
     * <http://msdn.microsoft.com/library>
     * <http://www.w3schools.com/jsref>
     * <http://www.w3schools.com/HTMLDOM>
+    * [DOM objects and methods](http://www.howtocreate.co.uk/tutorials/javascript/domstructure) - "all properties, collections and methods of the W3C DOM that can be reliably used in all major DOM browsers"
+    * mozdev.org
 * Animation
   * <http://api.jquery.com/category/effects/>
   * <http://api.jquery.com/animate/>

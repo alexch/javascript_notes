@@ -199,6 +199,10 @@
   x = 10;
   x.px();   // "10px"
 </code></pre></li>
+<li><p>here's a trick for reading "px" values</p>
+
+<pre><code>  parseInt(h1.style.width)
+</code></pre></li>
 </ul>
 
 
@@ -234,7 +238,7 @@
 <li><p>Animating HTML is very exciting</p>
 
 <pre><code>  function slide(element) {
-      element.style.position = "absolute";
+      element.style.position = "fixed";
       var x = 0;
       function step() {
           if (x &gt; 1000) {
@@ -280,6 +284,14 @@
 </ul>
 
 
+<h1>Loading jQuery</h1>
+
+<pre><code>&lt;script type="text/javascript"
+ src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" /&gt;
+</code></pre>
+
+<p><a href="http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/">http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/</a></p>
+
 <h1>Testing Animation</h1>
 
 <ul>
@@ -297,7 +309,7 @@
 <pre><code>  beforeEach(function() { 
     jasmine.Clock.useMock(); 
   }); 
-  //...
+  //... call the code that calls setTimeout
   jasmine.Clock.tick(500); // advance 500 msec
 </code></pre>
 
@@ -456,6 +468,29 @@
 </ul>
 
 
+<h1>more about jQuery binding</h1>
+
+<pre><code>var f = function(event) {....}
+
+$('#hi').click(f);
+$('#hi').change(f);
+
+$('#hi').bind('click', f);
+$('#ho').bind('change', f);
+
+$('#hi').bind('click change', f);
+
+$('#hi').bind('click', f)
+        .bind('change', f);
+</code></pre>
+
+<h1>Ready, Fire, Aim</h1>
+
+<pre><code>    $(document).ready(function() {
+        //
+    })
+</code></pre>
+
 <h1>Headless DOM</h1>
 
 <ul>
@@ -474,6 +509,8 @@
 <li><a href="http://msdn.microsoft.com/library">http://msdn.microsoft.com/library</a></li>
 <li><a href="http://www.w3schools.com/jsref">http://www.w3schools.com/jsref</a></li>
 <li><a href="http://www.w3schools.com/HTMLDOM">http://www.w3schools.com/HTMLDOM</a></li>
+<li><a href="http://www.howtocreate.co.uk/tutorials/javascript/domstructure">DOM objects and methods</a> - "all properties, collections and methods of the W3C DOM that can be reliably used in all major DOM browsers"</li>
+<li>mozdev.org</li>
 </ul>
 </li>
 <li>Animation
