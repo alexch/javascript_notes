@@ -154,24 +154,15 @@ Scoping note: `step` is available inside the function itself because we defined 
 * jQuery has some fun methods to animate CSS attributes
 * <http://api.jquery.com/animate>
     
-           $("#effect").animate({
-  					backgroundColor: "#aa0000"
-  				}, 1000 );
+           $("#logo").animate({
+             backgroundColor: "#aa0000"
+           }, 1000 );
 
   * You choose the attribute(s) and their final value, plus the duration of the entire effect
   * jQuery calculates and interpolates the details
 * jQuery UI has lots more
   * <http://jqueryui.com/>, not <http://jquery.com/>
-  
-  
-# Loading jQuery
 
-    <script type="text/javascript"
-     src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" />
-    
-<http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/>
-
-    
 # Testing Animation
 
 * Use a "Mock Clock"
@@ -210,7 +201,6 @@ Scoping note: `step` is available inside the function itself because we defined 
 > For the ends of Being and ideal Grace.
 
 >  - Elizabeth Barrett Browning (1806-1861)
-
 
 ## Event Name Gotcha
 
@@ -258,7 +248,6 @@ Scoping note: `step` is available inside the function itself because we defined 
         
     * gotcha: if you call `click()` with no parameters, it *triggers* a click
 
-
 # `return false`
 
 * if the event listener returns false, all further processing stops
@@ -282,29 +271,7 @@ Scoping note: `step` is available inside the function itself because we defined 
       * should have been "unfocus" or "losefocus"
     * change, select
     * submit, reset
-    
-# more about jQuery binding    
 
-    var f = function(event) {....}
-    
-    $('#hi').click(f);
-    $('#hi').change(f);
-    
-    $('#hi').bind('click', f);
-    $('#ho').bind('change', f);
-
-    $('#hi').bind('click change', f);
-
-    $('#hi').bind('click', f)
-            .bind('change', f);
-    
-    
-    
-# Ready, Fire, Aim
-
-        $(document).ready(function() {
-            //
-        })
 
 # Headless DOM
 
@@ -318,7 +285,6 @@ Scoping note: `step` is available inside the function itself because we defined 
     * <http://www.w3schools.com/jsref>
     * <http://www.w3schools.com/HTMLDOM>
     * [DOM objects and methods](http://www.howtocreate.co.uk/tutorials/javascript/domstructure) - "all properties, collections and methods of the W3C DOM that can be reliably used in all major DOM browsers"
-    * mozdev.org
 * Animation
   * <http://api.jquery.com/category/effects/>
   * <http://api.jquery.com/animate/>

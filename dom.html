@@ -265,9 +265,9 @@
 <li>jQuery has some fun methods to animate CSS attributes</li>
 <li><p><a href="http://api.jquery.com/animate">http://api.jquery.com/animate</a></p>
 
-<pre><code>     $("#effect").animate({
-              backgroundColor: "#aa0000"
-          }, 1000 );
+<pre><code>     $("#logo").animate({
+       backgroundColor: "#aa0000"
+     }, 1000 );
 </code></pre>
 
 <ul>
@@ -283,14 +283,6 @@
 </li>
 </ul>
 
-
-<h1>Loading jQuery</h1>
-
-<pre><code>&lt;script type="text/javascript"
- src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" /&gt;
-</code></pre>
-
-<p><a href="http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/">http://encosia.com/2008/12/10/3-reasons-why-you-should-let-google-host-jquery-for-you/</a></p>
 
 <h1>Testing Animation</h1>
 
@@ -468,29 +460,6 @@
 </ul>
 
 
-<h1>more about jQuery binding</h1>
-
-<pre><code>var f = function(event) {....}
-
-$('#hi').click(f);
-$('#hi').change(f);
-
-$('#hi').bind('click', f);
-$('#ho').bind('change', f);
-
-$('#hi').bind('click change', f);
-
-$('#hi').bind('click', f)
-        .bind('change', f);
-</code></pre>
-
-<h1>Ready, Fire, Aim</h1>
-
-<pre><code>    $(document).ready(function() {
-        //
-    })
-</code></pre>
-
 <h1>Headless DOM</h1>
 
 <ul>
@@ -510,7 +479,6 @@ $('#hi').bind('click', f)
 <li><a href="http://www.w3schools.com/jsref">http://www.w3schools.com/jsref</a></li>
 <li><a href="http://www.w3schools.com/HTMLDOM">http://www.w3schools.com/HTMLDOM</a></li>
 <li><a href="http://www.howtocreate.co.uk/tutorials/javascript/domstructure">DOM objects and methods</a> - "all properties, collections and methods of the W3C DOM that can be reliably used in all major DOM browsers"</li>
-<li>mozdev.org</li>
 </ul>
 </li>
 <li>Animation
