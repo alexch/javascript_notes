@@ -1,0 +1,44 @@
+
+<head>
+
+    <script type="text/javascript"
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js">
+    </script>
+    <script>
+
+    $(document).ready(function(){
+        console.log('ready');
+        $('#load_button').bind('click', function() {
+            console.log('clicking')
+            var button = this;
+            $(this).attr('disabled', true);
+            $.ajax("http://isitsnowinginsanfrancisco.com/")
+             .success(function(body) {
+                 console.log(body);
+                 $('#text').html(body);
+             })
+             .complete(function() {
+                 setTimeout(function() {
+                     $(button).attr('disabled', false);
+                 }, 1000);
+             });
+        });
+        
+
+    });
+
+    </script>
+</head>
+
+<body>
+    <h1>fun with AJAX</h1>
+
+
+    <input type="submit" id="load_button" value="Load">
+
+    <div id='text'
+    style="background-color: #EEEEEE; border: 1px solid blue;">
+    hello
+</div>
+
+</body>

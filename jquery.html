@@ -60,6 +60,7 @@
 <ul>
 <li>even if only one element matched</li>
 <li>or none</li>
+<li>the docs call it a <a href="http://api.jquery.com/Types/#jQuery">jQuery Object</a></li>
 </ul>
 </li>
 <li>a Collection has a length property
@@ -92,6 +93,12 @@
 <li><code>$('a').eq(2).attr('href')</code> -- returns the <code>href</code> attribute of the <strong>third</strong> matching element</li>
 <li><code>$('a').last().attr('href')</code> -- returns the <code>href</code> attribute of the <strong>last</strong> matching element</li>
 <li>see also <a href="http://api.jquery.com/category/traversing/filtering/">Filtering</a> doc</li>
+</ul>
+</li>
+<li>gotcha: if you have an error in your selector, jQuery will <strong>not</strong> warn you
+
+<ul>
+<li>it will just return an empty collection</li>
 </ul>
 </li>
 </ul>

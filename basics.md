@@ -49,9 +49,12 @@ http://www.selfhtml5.org/wp-content/uploads/2010/07/HTML5_Canvas_Cheat_Sheet.png
 
 ## General JavaScript Resources
 
-http://jibbering.com/faq/
-http://jibbering.com/faq/notes/
-http://www.crockford.com/javascript/survey.html
+* [Mozilla JavaScript Guide](http://developer.mozilla.org/en/JavaScript/Guide)
+* <http://jibbering.com/faq/>
+* <http://jibbering.com/faq/notes/>
+* <http://www.crockford.com/javascript/survey.html>
+* [JavaScript Garden](http://bonsaiden.github.com/JavaScript-Garden/) - "a growing collection of documentation about the most quirky parts of the JavaScript programming language. It gives advice to avoid common mistakes, subtle bugs, as well as performance issues and bad practices that non-expert JavaScript programmers may encounter on their endeavours into the depths of the language."
+
 
 # The Fine Print
 

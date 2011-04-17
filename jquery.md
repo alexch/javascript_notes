@@ -39,6 +39,7 @@ For more info and some great tutorials, see the [jQuery site](http://jquery.com/
 * when you call the $ function you always get back a **jQuery Collection**
   * even if only one element matched
   * or none
+  * the docs call it a [jQuery Object](http://api.jquery.com/Types/#jQuery)
 * a Collection has a length property
   * but it's not an Array
 * every Collection has a gajillion methods on it
@@ -55,6 +56,9 @@ For more info and some great tutorials, see the [jQuery site](http://jquery.com/
   * `$('a').eq(2).attr('href')` -- returns the `href` attribute of the **third** matching element
   * `$('a').last().attr('href')` -- returns the `href` attribute of the **last** matching element
   * see also [Filtering](http://api.jquery.com/category/traversing/filtering/) doc
+* gotcha: if you have an error in your selector, jQuery will **not** warn you
+  * it will just return an empty collection
+
 
 # Loading jQuery
 
