@@ -8,6 +8,7 @@ For more info and some great tutorials, see the [jQuery site](http://jquery.com/
   * [jQuery Docs](http://docs.jquery.com/Main_Page)
   * [How jQuery Works](http://docs.jquery.com/How_jQuery_Works)
   * [jQuery Tutorials](http://docs.jquery.com/Tutorials)
+  * [jQuery Tutorials for Designers](http://webdesignerwall.com/tutorials/jquery-tutorials-for-designers)
 
 # Core concept: $
 

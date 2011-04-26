@@ -515,6 +515,9 @@ TODO
 * jQuery's extend does *not* do this; instead it merges the contents of two or more objects together into the first object
   * as it turns out, this is a completely different way to do inheritance in JS
 
+# Resources
+
+* <http://javascriptweblog.wordpress.com/2010/08/30/understanding-javascripts-this/>
 
 # The Fine Print
 
