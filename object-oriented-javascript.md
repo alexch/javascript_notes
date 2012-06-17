@@ -517,7 +517,9 @@ TODO
 
 # Resources
 
+* <http://killdream.github.com/blog/2011/10/understanding-javascript-oop/index.html>
 * <http://javascriptweblog.wordpress.com/2010/08/30/understanding-javascripts-this/>
+* <http://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/>
 
 # The Fine Print
 
