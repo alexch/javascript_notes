@@ -5,26 +5,19 @@
  
 # Types
 
-# Equality
-
-TODO: Crockford examples
-
-http://stackoverflow.com/questions/1724255/why-does-2-2-in-javascript
-
-    2 == [2] // true
-
-evaluates as 
-
-    2 === Number([2].valueOf().toString())
-
-Moral: always use === (triple equal)
+(todo: overview of basic types in JS)
 
 # Objects
 
-  JS Object = Hash = Map = Dictionary
-  Keys are converted into strings 
+* JS Object = Hash = Map = Dictionary
+* Keys are converted into strings 
 
 # Properties
+
+* Properties are values stored on an object
+* Accessed two ways:
+  1. dot `user.name`
+  2. bracket `user['name']`
 
 # Arrays
 
@@ -38,6 +31,35 @@ In old implementations, the above suffers from a performance problem, so you may
 
     for (var i = 0, n = a.length; i<n; ++i) { ... }
 
+# Equality
+
+* `==` performs **type coercion**
+* this leads to some improbable results
+
+http://stackoverflow.com/questions/1724255/why-does-2-2-in-javascript
+
+    2 == [2] // true
+
+evaluates as 
+
+    2 === Number([2].valueOf().toString())
+
+# More equality madness
+
+    @@@ javascript
+    ""           ==   "0"           // false
+    0            ==   ""            // true
+    0            ==   "0"           // true
+    false        ==   "false"       // false
+    false        ==   "0"           // true
+    false        ==   undefined     // false
+    false        ==   null          // false
+    null         ==   undefined     // true
+    " \t\r\n"    ==   0             // true
+
+(from <http://bonsaiden.github.com/JavaScript-Garden/#types.equality>)
+
+## Moral: always use === (triple equal)
 
 # Canvas
 
@@ -58,4 +80,4 @@ http://www.selfhtml5.org/wp-content/uploads/2010/07/HTML5_Canvas_Cheat_Sheet.png
 
 # The Fine Print
 
-> This work is copyright (C) 2010-2011 by Alex Chaffee. All rights reserved. Permission is granted to use this material for non-profit educational purposes, including self-education and open workshops. Use by educational institutions or for-profit classes must be licensed. For permission, please contact Alex Chaffee at alex@stinky.com.
+> This work is copyright (C) 2010-2012 by Alex Chaffee. All rights reserved. Permission is granted to use this material for non-profit educational purposes, including self-education and open workshops. Use by educational institutions or for-profit classes must be licensed. For permission, please contact Alex Chaffee at alex@stinky.com.
